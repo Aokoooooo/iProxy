@@ -955,14 +955,15 @@ module.exports = function (req, res, next) {
                 _resHeaders['content-type'] = resType + '; charset=' + data.charset;
               } else {
                 delete data.charset;
-              if (resRules.resType) {
-                var newType = util.getMatcherValue(resRules.resType).split(';');
-                var type = newType[0];
-                newType[0] =
-                  !type || type.indexOf('/') != -1
-                    ? type
-                    : (type === 'sse' ? 'text/event-stream' : mime.lookup(type, type));
-                _resHeaders['content-type'] = util.getNewType(newType.join(';'), _resHeaders);
+                if (resRules.resType) {
+                  var newType = util.getMatcherValue(resRules.resType).split(';');
+                  var type = newType[0];
+                  newType[0] =
+                    !type || type.indexOf('/') != -1
+                      ? type
+                      : (type === 'sse' ? 'text/event-stream' : mime.lookup(type, type));
+                  _resHeaders['content-type'] = util.getNewType(newType.join(';'), _resHeaders);
+                }
               }
               var delProps = util.parseDelProps(req);
               util.setCharset(_resHeaders, data.charset, delProps.resType, delProps.resCharset);
